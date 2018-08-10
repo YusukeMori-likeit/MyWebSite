@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>商品検索結果</title>
+<!-- Compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+<link rel="stylesheet" href="css/origin.css">
+
+<!-- Compiled and minified JavaScript -->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+</head>
+<body>
+	<!-- header -->
+	<!-- Dropdown Structure -->
+	<ul id="dropdown1" class="dropdown-content">
+		<li><a href="#!">one</a></li>
+		<li><a href="#!">two</a></li>
+		<li class="divider"></li>
+		<li><a href="#!">three</a></li>
+	</ul>
+	<nav>
+		<div class="nav-wrapper">
+			<a href="#!" class="brand-logo">Logo</a>
+			<ul class="right hide-on-med-and-down">
+				<li><a href="sass.html">UserInformation</a></li>
+				<li><a href="badges.html">aaa</a></li>
+				<!-- Dropdown Trigger -->
+				<li><a class="dropdown-trigger" href="#!"
+					data-target="dropdown1">Dropdown<i class="material-icons right">arrow_drop_down</i></a></li>
+			</ul>
+		</div>
+	</nav>
+	<!-- /header -->
+	<div class="section no-pad-bot" id="index-banner">
+		<div class="container">
+			<div class="row center">
+				<div class="input-field col s8 offset-s2 ">
+					<form action="ItemSearchResult">
+						<i class="material-icons prefix">search</i> <input type="text" name="search_word" value="${searchWord}">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row center">
+			<h5 class=" col s12 light">検索結果</h5>
+			<p>
+				検索結果${itemCount}件
+			</p>
+		</div>
+		<div class="section">
+			<!--   商品情報   -->
+			<div class="row">
+				<c:forEach var="item" items="${itemList}" varStatus="status">
+				<div class="col s12 m3">
+					<div class="card">
+						<div class="card-image">
+							<a href="Item?item_id=${item.id}&page_num=${pageNum}"><img src="img/${item.fileName}"></a>
+						</div>
+						<div class="card-content">
+							<span class="card-title">${item.name}</span>
+							<p>${item.price}円
+							</p>
+						</div>
+					</div>
+				</div>
+				<c:if test="${(status.index + 1) % 4 == 0}">
+			</div>
+			<div class="row">
+				</c:if>
+				</c:forEach>
+			</div>
+		</div>
+		<div class="row center">
+			<ul class="pagination">
+				<!-- １ページ戻るボタン  -->
+				<c:choose>
+					<c:when test="${pageNum == 1}">
+						<li class="disabled"><a><i class="material-icons">chevron_left</i></a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="waves-effect"><a href="ItemSearchResult?search_word=${searchWord}&page_num=${pageNum - 1}"><i class="material-icons">chevron_left</i></a></li>
+					</c:otherwise>
+				</c:choose>
+
+				<!-- ページインデックス -->
+				<c:forEach begin="${(pageNum - 5) > 0 ? pageNum - 5 : 1}" end="${(pageNum + 5) > pageMax ? pageMax : pageNum + 5}" step="1" varStatus="status">
+					<li <c:if test="${pageNum == status.index }"> class="active" </c:if>><a href="ItemSearchResult?search_word=${searchWord}&page_num=${status.index}">${status.index}</a></li>
+				</c:forEach>
+
+				<!-- 1ページ送るボタン -->
+				<c:choose>
+				<c:when test="${pageNum == pageMax || pageMax == 0}">
+					<li class="disabled"><a><i class="material-icons">chevron_right</i></a></li>
+				</c:when>
+				<c:otherwise>
+					<li class="waves-effect"><a href="ItemSearchResult?search_word=${searchWord}&page_num=${pageNum + 1}"><i class="material-icons">chevron_right</i></a></li>
+				</c:otherwise>
+				</c:choose>
+			</ul>
+		</div>
+	</div>
+		<script type="text/javascript">
+		$(".dropdown-trigger").dropdown();
+	</script>
+</body>
+</html>
