@@ -56,6 +56,8 @@ public class EcHelper {
 
 	static final String HNOWONAIR_PAGE = "/WEB-INF/jsp/hnowonair.jsp";
 
+	static final String RANKING_PAGE = "/WEB-INF/jsp/ranking.jsp";
+
 
 	public static EcHelper getInstance() {
 		return new EcHelper();

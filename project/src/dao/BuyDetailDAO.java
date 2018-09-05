@@ -10,11 +10,6 @@ import base.DBManager;
 import beans.BuyDetailDataBeans;
 import beans.ItemDataBeans;
 
-/**
- *
- * @author d-yamaguchi
- *
- */
 public class BuyDetailDAO {
 
 	/**
@@ -131,4 +126,53 @@ public class BuyDetailDAO {
 		}
 	}
 
+	/**
+	 * 購入IDによる購入情報検索
+	 * @param buyId
+	 * @return {BuyDataDetailBeans}
+	 * @throws SQLException
+	 */
+	public static ArrayList<ItemDataBeans> getItemDataBeansListByBuyCount(int limit) throws SQLException {
+		String i = "item_id";
+		Connection con = null;
+		PreparedStatement st = null;
+		try {
+			con = DBManager.getConnection();
+
+			st = con.prepareStatement("SELECT * ,COUNT(?) FROM t_buy_detail INNER JOIN m_item3 ON t_buy_detail.item_id = m_item3.id GROUP BY item_id ORDER BY count(item_id) DESC LIMIT ?");
+			  st.setString(1, i);
+			  st.setInt(2,limit);
+
+			ResultSet rs = st.executeQuery();
+			ArrayList<ItemDataBeans> itemCountList = new ArrayList<ItemDataBeans>();
+
+			while (rs.next()) {
+				ItemDataBeans idb = new ItemDataBeans();
+				idb.setId(rs.getInt("item_id"));
+				idb.setName(rs.getString("name"));
+				idb.setDetail(rs.getString("detail"));
+				idb.setPrice(rs.getInt("price"));
+				idb.setFileName(rs.getString("file_name"));
+				idb.setGenre(rs.getString("genre"));
+				idb.setNowonair(rs.getString("nowonair"));
+				itemCountList.add(idb);
+			}
+
+			System.out.println("searching BuyDataBeansList by BuyID has been completed");
+			return itemCountList;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			throw new SQLException(e);
+		} finally {
+			if (con != null) {
+				con.close();
+			}
+		}
+	}
+
 }
+
+
+
+
+

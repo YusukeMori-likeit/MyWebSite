@@ -26,6 +26,10 @@
 				</div>
 			</div>
 			<br> <br>
+			<div class="center">
+			<a href="Ranking" class="waves-effect waves-light btn">売れ筋ランキング</a>
+			</div>
+
 			<div class="right">
 			上映中一覧
 			<div class="row">
